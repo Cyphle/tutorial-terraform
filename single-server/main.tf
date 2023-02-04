@@ -39,6 +39,7 @@ resource "aws_security_group" "instance" {
   }
 }
 
+# Output variable. After finishing script, it prints this. Can also but requested.
 output "public_ip" {
   value = aws_instance.MyFirstInstance.public_ip
   description = "The public IP address of the web server"
