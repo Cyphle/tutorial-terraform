@@ -4,8 +4,8 @@ provider "aws" {
 
 variable "server_port" {
   description = "The port of the server will use for HTTP requests"
-  type = number
-  default = 8080
+  type        = number
+  default     = 8080
 }
 
 # Create a single instance
@@ -41,6 +41,6 @@ resource "aws_security_group" "instance" {
 
 # Output variable. After finishing script, it prints this. Can also but requested.
 output "public_ip" {
-  value = aws_instance.MyFirstInstance.public_ip
+  value       = aws_instance.MyFirstInstance.public_ip
   description = "The public IP address of the web server"
 }
