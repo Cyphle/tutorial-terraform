@@ -1,9 +1,10 @@
 
+# Read state from data-stores/mysql state
 data "terraform_remote_state" "dbcredentials" {
   backend = "s3"
 
   config = {
-    buckuet = <bucket_name>
+    buckuet = "terraform-up-and-running-state"
     key = "stage-data-stores/mysql/terraform.tfstate"
     region = "eu-west-3"
    }
