@@ -3,7 +3,7 @@ resource "aws_launch_configuration" "aninstance" {
   instance_type   = var.instance_type
   security_groups = [aws_security_group.mysg.id]
 
-  user_data = templatefile("user-data.sh", {
+  user_data = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port
     # Use databse state defined in data-stores/mysql and linked with remote state source defined in elb
     db_address  = data.terraform_remote_state.db_instance.outputs.address
