@@ -1,6 +1,8 @@
 resource "aws_launch_configuration" "aninstance" {
   image_id        = "ami-0ca5ef73451e16dc1"
   instance_type   = var.instance_type
+  # Workspace: Il est possible d'avoir des workspace Terraform pour configurer différemment
+  # instance_type = terraform.workspace == "default" ? "t2.medium" : "t2.micro"
   security_groups = [aws_security_group.mysg.id]
 
   user_data = templatefile("${path.module}/user-data.sh", {

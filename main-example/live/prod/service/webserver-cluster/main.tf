@@ -17,3 +17,8 @@ module "webserver_cluster" {
   enable_autoscaling = true
 }
 
+# Example d'utilisation d'un output de module
+output "ref_to_module_output" {
+  description = "Référence à un output d'un module pour l'utiliser"
+  value = module.webserver_cluster.alb_dns_name
+}

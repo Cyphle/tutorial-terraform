@@ -2,6 +2,7 @@ provider "aws" {
   region = "eu-west-3"
 }
 
+# This is a definition of a S3 for storing remote state (store Terraform state in remote destination)
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "terraform-cyphle-state-tutorial"
 
