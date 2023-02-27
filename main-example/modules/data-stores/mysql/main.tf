@@ -1,7 +1,10 @@
+# TODO modulariser ca
+
 provider "aws" {
   region = "us-west-3"
 }
 
+# Terraform backend to store statefile in S3 bucket
 terraform {
   backend "s3" {
     bucket = "terraform-up-and-running-state"

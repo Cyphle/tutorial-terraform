@@ -1,9 +1,18 @@
 provider "aws" {
   region = "eu-west-3"
+
+  # Tags to apply to all resources by default
+  default_tags {
+    tags = {
+      Owner     = "terra-foo"
+      ManagedBy = "Terraform"
+    }
+  }
 }
 
 # ref of module
 module "webserver_cluster" {
+  # Importing the module
   source = "../../../modules/services/webserver-cluster"
 
   # Inputs of module
@@ -15,6 +24,11 @@ module "webserver_cluster" {
   min_size           = 2
   max_size           = 10
   enable_autoscaling = true
+
+  custom_tags = {
+    Owner     = "team-foo"
+    ManagedBy = "terraform"
+  }
 }
 
 # Example d'utilisation d'un output de module

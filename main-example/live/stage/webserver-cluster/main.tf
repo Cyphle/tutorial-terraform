@@ -4,8 +4,11 @@ provider "aws" {
 
 # Use of a module
 module "webserver_cluster" {
-  # Utilisation de repository Github pour importer le module
+  # Utilisation de repository Github pour importer le module avec une version
   source = "github.com/brikis98/terraform-up-and-running-code/code/terraform/04-terraform-module/module-example/modules/services/webserver-cluster?ref=v0.3.0"
+
+  ami         = "ami-0fb653ca2d3203ac1"
+  server_text = "New server test"
 
   # Input variables of module
   cluster_name           = "webservers-stage"

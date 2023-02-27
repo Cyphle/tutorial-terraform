@@ -1,4 +1,8 @@
 resource "aws_autoscaling_group" "myasg" {
+  # For 0 downtime deployment name depends on launch configuration in order to be updated
+  # name = "${var.cluster_name}-${aws_launch_configuration.aninstance.name}"
+  name = var.cluster_name
+
   launch_configuration = aws_launch_configuration.aninstance.name
   # Launch in all subnets found
   vpc_zone_identifier = data.aws_subnets.subnets_in_default_vpc.ids
@@ -10,6 +14,22 @@ resource "aws_autoscaling_group" "myasg" {
 
   min_size = var.min_size
   max_size = var.max_size
+
+  # For 0 downtime deployment, wait for at least this many instances to pass health checks before considering ASG deployment complete
+  # min_elb_capacity = var.min_size
+
+  # For 0 downtime deployment, when replacing ASG, create replacement first and only delete the original after
+  # lifecycle {
+  #   create_before_destroy = true
+  # }
+
+  # Solution AWS pour faire du 0 downtime avec le même nombre de replicas qu'originalement
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+  }
 
   tag {
     key                 = "Name"
