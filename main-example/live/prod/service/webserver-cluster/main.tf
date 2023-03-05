@@ -22,7 +22,7 @@ provider "aws" {
 # ref of module
 module "webserver_cluster" {
   # Importing the module
-  source = "../../../modules/services/webserver-cluster"
+  source = "../../../../modules/services/webserver-cluster"
 
   # Inputs of module
   cluster_name           = "webservers-prod"

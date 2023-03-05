@@ -1,10 +1,15 @@
 provider "aws" {
-  region = "us-west-3"
+  region = "us-ease-2"
 }
 
 module "database" {
-  source = "../../../modules/data-stores/mysql"
+  source = "../../../../modules/data-stores/mysql"
 
-  db_username = "<TO_BE_DEFINED>"
-  db_password = "<TO_BE_DEFINED>"
+  providers = {
+    aws = aws
+  }
+
+  db_name     = "staging_db"
+  db_username = var.db_username
+  db_password = var.db_password
 }
