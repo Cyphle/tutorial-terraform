@@ -1,3 +1,7 @@
+data "aws_ec2_instance_type" "instance" {
+    instance_type = var.instance_type
+}
+
 resource "aws_launch_configuration" "aninstance" {
   image_id      = var.ami
   instance_type = var.instance_type
@@ -11,6 +15,10 @@ resource "aws_launch_configuration" "aninstance" {
   # use lifecycle settings to tell Terraform to create new things before deleting old ones.
   lifecycle {
     create_before_destroy = true
+    precondition {
+            condition = data.aws_ec2_instance_type.instance.free_tier_eligible
+            error_message = "${var.instance_type} is not part of the AWS Free tier !"
+        }
   }
 }
 
