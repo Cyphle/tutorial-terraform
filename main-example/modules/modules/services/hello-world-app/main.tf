@@ -8,8 +8,8 @@ module "asg" {
   user_data = templatefile("${path.module}/user-data.sh", {
     server_port = var.server_port
     # Use databse state defined in data-stores/mysql and linked with remote state source defined in state
-    db_address  = data.terraform_remote_state.db_instance.outputs.address
-    db_port     = data.terraform_remote_state.db_instance.outputs.port
+    db_address  = local.mysql_config.address
+    db_port     = local.mysql_config.port
     server_text = var.server_text
   })
 
@@ -17,7 +17,7 @@ module "asg" {
   max_size           = var.max_size
   enable_autoscaling = var.enable_autoscaling
 
-  subnet_ids        = data.aws_subnets.default.ids
+  subnet_ids        = local.subnet_ids
   target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
 
@@ -28,19 +28,7 @@ module "alb" {
   source = "../../networking/alb"
 
   alb_name   = "hello-world-${var.environment}"
-  subnet_ids = data.aws_subnets.default.ids
-}
-
-# Data sources are used to get information from AWS
-data "aws_vpc" "default_vpc" {
-  default = true
-}
-
-data "aws_subnets" "subnets_in_default_vpc" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default_vpc.id]
-  }
+  subnet_ids = local.subnet_ids
 }
 
 # ----
@@ -51,7 +39,7 @@ resource "aws_lb_target_group" "asg" {
   name     = "hello-world-${var.environment}"
   port     = var.server_port
   protocol = "HTTP"
-  vpc_id   = data.aws_vpc.default_vpc.id
+  vpc_id   = local.vpc_id
 
   health_check {
     path                = "/"
@@ -77,17 +65,5 @@ resource "aws_lb_listener_rule" "listener_rule" {
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.asg.arn
-  }
-}
-
-# Definition of remote state
-data "terraform_remote_state" "db_instance" {
-  # Reference backend named s3
-  backend = "s3"
-
-  config = {
-    bucket = var.db_remote_state_bucket
-    key    = var.db_remote_state_key
-    region = "eu-west-3"
   }
 }

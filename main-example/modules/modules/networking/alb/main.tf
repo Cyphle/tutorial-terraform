@@ -1,7 +1,7 @@
 # ----
 # LOAD BALANCER
 # ----
-resource "aws_lb" "my_alb" {
+resource "aws_lb" "example" {
   name               = var.alb_name
   load_balancer_type = "application"
   subnets            = data.aws_subnets.subnets_in_default_vpc.ids
@@ -12,7 +12,7 @@ resource "aws_lb" "my_alb" {
 # ELB LISTENER AND ITS RULES
 # ----
 resource "aws_lb_listener" "http_listener" {
-  load_balancer_arn = aws_lb.my_alb.arn
+  load_balancer_arn = aws_lb.example.arn
   port              = local.http_port
   protocol          = "HTTP"
 
