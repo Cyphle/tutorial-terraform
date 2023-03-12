@@ -8,6 +8,8 @@ import (
 )
 
 func TestHelloWorldAppExample(t *testing.T) {
+	t.Parallel()
+
 	opts := &terraform.Options{
 		TerraformDir: "../examples/services/hello-world-app"
 
@@ -16,7 +18,8 @@ func TestHelloWorldAppExample(t *testing.T) {
 			"mysql_config": map[string]interface{}{
 				"address": "mock-value-for-test",
 				"port": 3306
-			}
+			},
+			"environment": fmt.Sprintf("test-%s", random.UniqueId())
 		}
 	}
 

@@ -7,18 +7,6 @@ terraform {
   }
 }
 
-# Terraform backend to store statefile in S3 bucket
-terraform {
-  backend "s3" {
-    bucket = "terraform-up-and-running-state"
-    key    = "stage/data-stores/mysql/terraform.tfstate"
-    region = "eu-west-3"
-
-    dynamodb_table = "terrform-up-and-running-locks"
-    encrypt        = true
-  }
-}
-
 # It is now set to activate replication
 resource "aws_db_instance" "sqldb" {
   identifier_prefix   = "terraform-up-and-running"
